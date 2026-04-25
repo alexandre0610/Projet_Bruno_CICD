@@ -1,35 +1,36 @@
-pipeline{
-    agent{
-        docker{
-            image 'playwright-bruno'
-            args '-u=root --entrypoint='
-        }
-    }
-  
-    stages{
+pipeline {
+    agent any
+
+    stages {
+
         stage('Build Docker image') {
             steps {
-        sh 'docker build -t playwright-bruno .'
+                sh 'docker build -t playwright-bruno .'
             }
         }
-        stage('On installe le clibruno') {
-            steps {
-                
-                sh "npm install -g @usebruno/cli"
-                    
-            }    
 
-        }
-
-        stage(' Effectuer les test et generer le rapport .htlm '){
-            steps{
-                sh "bru run --env preprod --reporter-html report.html"
+        stage('Run tests in container') {
+            agent {
+                docker {
+                    image 'playwright-bruno'
+                    args '-u root --entrypoint=""'
+                }
             }
 
+            stages {
+
+                stage('Check Bruno') {
+                    steps {
+                        sh 'npx @usebruno/cli --version'
+                    }
+                }
+
+                stage('Run tests') {
+                    steps {
+                        sh 'npx @usebruno/cli run --env preprod --reporter-html report.html'
+                    }
+                }
+            }
         }
     }
 }
-
-
-
-    
