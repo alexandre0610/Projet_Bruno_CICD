@@ -21,9 +21,6 @@ pipeline{
                 sh "bru run --env preprod --reporter-html report.html"
             }
 
-        
-
-        
         }
     }
 }
