@@ -1,0 +1,32 @@
+info:
+  name: post login
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{url}}users/login"
+  body:
+    type: json
+    data: |-
+      {
+        "email": "{{email}}",
+        "password": "{{password}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("stocker le token", ()=>{
+          let bodyres=res.getBody()
+          let access_token = bodyres.access_token
+          bru.setVar("acces_token",access_token)
+        })
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

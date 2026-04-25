@@ -1,0 +1,34 @@
+info:
+  name: get by id put
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{url}}brands/{{idbrands}}"
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("verifier statue 200", ()=>{
+          let code =res.status
+          expect(200).to.equal(code)
+        })
+
+        test("verifier que la valeur attendue est egale à la valeur obtenue", ()=>{
+          let nameupdate = bru.getVar("nameupdate")
+          let slugupdate = bru.getVar("slugupdate")
+          let bodyres = res.getBody()
+          let nameres = bodyres.name
+          let slugres = bodyres.slug 
+          expect(nameupdate).to.equal(nameres)
+          expect(slugupdate).to.equal(slugres)
+        })
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

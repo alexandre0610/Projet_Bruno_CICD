@@ -1,0 +1,5 @@
+FROM mcr.microsoft.com/playwright:v1.59.1-noble
+
+RUN npm install -g @usebruno/cli
+
+WORKDIR /app

@@ -1,0 +1,4 @@
+name: preprod
+variables:
+  - name: url
+    value: https://api.practicesoftwaretesting.com/

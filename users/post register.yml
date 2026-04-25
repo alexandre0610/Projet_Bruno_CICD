@@ -1,0 +1,47 @@
+info:
+  name: post register
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{url}}users/register"
+  body:
+    type: json
+    data: |-
+      {
+        "first_name": "John",
+        "last_name": "Doe",
+        "address": {
+          "street": "Street 1",
+          "city": "City",
+          "state": "State",
+          "country": "Country",
+          "postal_code": "1234AA"
+        },
+        "phone": "0987654321",
+        "dob": "1970-01-01",
+        "password": "{{password}}",
+        "email": "{{$randomEmail}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: before-request
+      code: |-
+        let number =Math.floor(Math.random()*801)+800;
+        bru.setVar("password",number+"@aaZee222")
+    - type: tests
+      code: |-
+        test("recuperer les valeurs de l'email et mdp de la réponse e", ()=>{
+          let bodyreq= req.getBody()
+          let emailreq = bodyreq.email
+          bru.setVar("email",emailreq)
+        })
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

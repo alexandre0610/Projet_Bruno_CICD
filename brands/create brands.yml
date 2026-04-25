@@ -1,0 +1,60 @@
+info:
+  name: create brands
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{url}}brands"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "new brand",
+        "slug": "{{$randomFirstName}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("verifier statue 201", ()=>{
+          let code =res.status
+          expect(201).to.equal(code)
+        })
+
+        test("verifier que la valeur attendue est egale à la valeur obtenue", ()=>{
+          let bodyreq = req.getBody()
+          let bodyres = res.getBody()
+          
+          let namereq = bodyreq.name
+          let slugreq = bodyreq.slug
+          let nameres = bodyres.name
+          let slugres = bodyres.slug
+          let idres = bodyres.id
+          
+          expect(namereq).to.equal(nameres)
+          expect(slugreq).to.equal(slugres)
+          // variable de collection
+          bru.setVar("idbrands",idres)
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          
+        })
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5

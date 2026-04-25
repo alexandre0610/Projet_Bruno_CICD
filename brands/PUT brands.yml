@@ -1,0 +1,47 @@
+info:
+  name: PUT brands
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{url}}brands/{{idbrands}}"
+  body:
+    type: json
+    data: |-
+      {
+        "name": "{{$randomFullName}}",
+        "slug": "{{$randomFirstName}}"
+      }
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: tests
+      code: |-
+        test("verifier le code statue 200", ()=>{
+          let code =res.status
+          expect(200).to.equal(code)
+        })
+        //verifier que le mess attendu est egal au mess obtenue
+        test("verifier le message ", ()=>{
+          let bodyres=res.getBody()
+          let messres= bodyres.success
+          expect(true).to.equal(messres)
+          // recuperer les valeurs modifier afin de pourvoir les comaparer plus tard avec nos valeurs de get by id put
+           let bodyreq= req.getBody()
+           let namereq = bodyreq.name
+           let slugreq = bodyreq.slug
+           bru.setVar("nameupdate",namereq)
+           bru.setVar("slugupdate",slugreq)
+          
+                      
+           
+          
+        })
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
