@@ -7,6 +7,11 @@ pipeline{
     }
   
     stages{
+        stage('Build Docker image') {
+            steps {
+        sh 'docker build -t playwright-bruno .'
+            }
+        }
         stage('On installe le clibruno') {
             steps {
                 
